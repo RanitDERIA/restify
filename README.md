@@ -1,9 +1,12 @@
 <div align="center">
   
   ![GitHub repo size](https://img.shields.io/badge/repo_size-30_MB-gold)
-  ![GitHub stars](https://img.shields.io/github/stars/ranitderia/restify?style=social)
-  ![GitHub forks](https://img.shields.io/github/forks/ranitderia/restify?style=social)
-  [![Twitter Follow](https://img.shields.io/twitter/follow/DeriaRanit?style=social)](https://twitter.com/intent/follow?screen_name=DeriaRanit)
+![GitHub stars](https://img.shields.io/github/stars/RanitDERIA/restify?style=social)
+![GitHub forks](https://img.shields.io/github/forks/RanitDERIA/restify?style=social)
+
+[![Twitter Follow](https://img.shields.io/twitter/follow/DeriaRanit?style=social)](https://twitter.com/intent/follow?screen_name=DeriaRanit)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn%20%40ranit--deria-blue?style=flat-square)](https://www.linkedin.com/in/ranit-deria-916864257/)
+
 
   <br />
   <br />
