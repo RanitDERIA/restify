@@ -49,9 +49,6 @@ if (process.env.NODE_ENV === 'production') {
     app.set('trust proxy', 1);
 }
 
-// Security: Helmet to set HTTP headers
-app.use(helmet());
-
 // Middleware setup
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
@@ -77,7 +74,7 @@ app.use(
         resave: false,
         saveUninitialized: true,
         cookie: {
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
@@ -91,6 +88,11 @@ app.use(flash());
 // Passport Configuration
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Security: Helmet to set HTTP headers
+app.use(helmet());
+
+
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
