@@ -24,8 +24,8 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-// const MONGO_URL = "mongodb://127.0.0.1:27017/restify";
-const dbUrl = process.env.ATLASDB_URL;
+// Use environment variable for the database URL
+const dbUrl = process.env.ATLASDB_URL || "mongodb://127.0.0.1:27017/restify";
 
 // Async function to connect to MongoDB
 async function main() {
@@ -52,27 +52,27 @@ app.use(methodOverride("_method"));
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
-        secret: "mysupersecret"
+        secret: process.env.SESSION_SECRET || "thisshouldbeasecret", // Use environment variable for session secret
     },
     touchAfter: 24 * 3600, 
 });
 
-// Error catcher
-store.on("error", () => {
-    console.log("ERROR in MONGO SESSION STORE");
-    
-})
+// Error catcher for MongoDB session store
+store.on("error", (e) => {
+    console.log("ERROR in MONGO SESSION STORE:", e);
+});
 
-// Session setup
+// Session setup with conditional secure cookie
 app.use(
     session({
         store: store,
-        secret: "mysupersecret",
+        name: "session", // Custom cookie name for security
+        secret: process.env.SESSION_SECRET || "thisshouldbeasecret", // Use environment variable for session secret
         resave: false,
         saveUninitialized: true,
         cookie: {
-            secure: false,
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            secure: process.env.NODE_ENV === "production", // Only set to true in production for HTTPS
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
         },
