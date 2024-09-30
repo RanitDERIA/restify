@@ -1,0 +1,184 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<style>
+    #filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Center the icons and text */
+        margin: 10px 0; /* Reduced margin for spacing */
+    }
+
+    .filter {
+        text-align: center; /* Center the icon and text */
+        margin: 0 10px; /* Reduced space between icons */
+        transition: transform 0.3s; /* Add transition effect */
+        text-decoration: none; /* Remove text decoration from filter links */
+    }
+
+    .filter:hover {
+        transform: scale(1.1); /* Slightly enlarge on hover */
+        cursor: pointer;
+    }
+
+    .filter i {
+        font-size: 1.5rem; /* Set icon size */
+        color: #b99650; /* Icon color */
+    }
+
+    .filter p {
+        color: black;
+        margin-top: 5px; /* Space between icon and text */
+        font-weight: bold; /* Make text bold */
+    }
+
+    .listing-row {
+        margin-top: 20px; /* Spacing between filters and listing cards */
+    }
+
+    .active-filter {
+        color: #d4af37; /* Highlight active filter */
+    }
+
+    a {
+        text-decoration: none !important; /* Ensure no text decoration on all links */
+    }
+
+    .tax-info {
+        display: none; /* Initially hide the tax-inclusive prices */
+    }
+
+    /* Style the toggle switch */
+    .form-check-input {
+        width: 1.5rem; /* Smaller width */
+        height: 1rem; /* Smaller height */
+        background-color: white;
+        border: 2px solid #46143c; /* Set border color to match your design */
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .form-check-input:checked {
+        background-color: #46143c; /* Background color when checked */
+        border-color: #46143c; /* Border color when checked */
+    }
+
+    .form-check-label {
+        color: #46143c;
+        margin-left: 0.5rem;
+        font-weight: bold;
+        font-size: 0.9rem; /* Smaller label text */
+    }
+
+    .tax-switch {
+        display: flex;
+        justify-content: flex-end; /* Move switch to the right */
+        margin-right: 1rem;
+        margin-top: 0.5rem;
+    }
+</style>
+
+<body>
+    <!-- Flash Message Section -->
+    <% if (messages.success) { %>
+        <div class="alert alert-success">
+            <%= messages.success %>
+        </div>
+    <% } %>
+
+    <!-- Category Filters Section -->
+    <div id="filters">
+        <a href="/listings?category=trending" class="filter <%= selectedCategory === 'trending' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </a>
+        <a href="/listings?category=rooms" class="filter <%= selectedCategory === 'rooms' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </a>
+        <a href="/listings?category=cities" class="filter <%= selectedCategory === 'cities' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-city"></i></div>
+            <p>Iconic Cities</p>
+        </a>
+        <a href="/listings?category=mountains" class="filter <%= selectedCategory === 'mountains' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-mountain"></i></div>
+            <p>Mountains</p>
+        </a>
+        <a href="/listings?category=castles" class="filter <%= selectedCategory === 'castles' ? 'active-filter' : '' %>">
+            <div><i class="fa-brands fa-fort-awesome"></i></div>
+            <p>Castles</p>
+        </a>
+        <a href="/listings?category=pools" class="filter <%= selectedCategory === 'pools' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-water"></i></div>
+            <p>Amazing Pools</p>
+        </a>
+        <a href="/listings?category=camping" class="filter <%= selectedCategory === 'camping' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-campground"></i></div>
+            <p>Camping</p>
+        </a>
+        <a href="/listings?category=farms" class="filter <%= selectedCategory === 'farms' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-horse"></i></div>
+            <p>Farms</p>
+        </a>
+        <a href="/listings?category=arctic" class="filter <%= selectedCategory === 'arctic' ? 'active-filter' : '' %>">
+            <div><i class="fa-solid fa-snowflake"></i></div>
+            <p>Arctic</p>
+        </a>
+
+        <!-- Toggle Switch for Taxes -->
+        <div class="form-check form-switch tax-switch" style="margin-left: 1.8rem;">
+            <input class="form-check-input" type="checkbox" id="taxSwitch">
+            <label class="form-check-label" for="taxSwitch">Display Total After Taxes</label>
+        </div>
+    </div>
+
+    <!-- Listings Section -->
+    <div class="container"> <!-- Bootstrap container for proper alignment and spacing -->
+        <div class="row listing-row"> <!-- Add class for spacing -->
+            <% for (let listing of allListings) { %>
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <a href="/listings/<%= listing._id %>" class="card-link" style="text-decoration: none;">
+                        <div class="card h-100">
+                            <div class="image-container position-relative">
+                                <img src="<%= listing.image.url %>" class="card-img-top" alt="listing.image" style="height: 20rem;">
+                                <div class="overlay">
+                                    <span class="overlay-text">
+                                        <%= listing.country %>
+                                    </span> <!-- Overlay text -->
+                                </div>
+                            </div>
+                            <div class="card-body mt-2">
+                                <h5 class="card-title">
+                                    <%= listing.title %>
+                                </h5> <!-- Display the listing title -->
+                                <p class="card-text">
+                                    <% if (listing.price) { %>
+                                        ₹<span class="price-before-tax"><%= listing.price.toLocaleString('en-IN') %> <i>+ 18% GST</i> / night</span>
+                                        <span class="tax-info"><%= Math.floor(listing.price * 1.18).toLocaleString('en-IN') %> / night</span>
+                                    <% } else { %>
+                                        Price not available
+                                    <% } %>
+                                </p>
+                                <!-- Display price with Indian formatting or fallback text -->
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Script to toggle tax-inclusive price display -->
+    <script>
+        document.getElementById("taxSwitch").addEventListener("change", function() {
+            let showTaxes = this.checked;
+            let taxInfoElements = document.querySelectorAll(".tax-info");
+            let priceBeforeTaxElements = document.querySelectorAll(".price-before-tax");
+
+            taxInfoElements.forEach(function(taxInfo) {
+                taxInfo.style.display = showTaxes ? "inline" : "none"; // Show or hide tax info
+            });
+
+            priceBeforeTaxElements.forEach(function(price) {
+                price.style.display = showTaxes ? "none" : "inline"; // Show or hide price with "+ 18% GST"
+            });
+        });
+    </script>
+</body>

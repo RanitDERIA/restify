@@ -1,0 +1,196 @@
+body {
+    font-family: 'Amazon Ember', sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+
+/* Navbar */
+.navbar {
+    font-size: 1.1rem !important;
+    background-color: #46143c; /* Light background for better contrast */
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #b99650; /* Matching the plane icon color */
+}
+
+.navbar-nav .nav-link.active {
+    font-weight: bold;
+    color: #b99650; /* Active page styling */
+}
+
+.fa-plane {
+    font-size: 2rem !important;
+    color: #b99650;
+}
+
+.icon-small {
+    font-size: 1.5rem; /* Adjust the size as needed */
+    transition: transform 0.3s ease, color 0.3s ease; /* Animate scale and color changes */
+}
+
+/* Scale the icon up on hover */
+.navbar-brand:hover .icon-small {
+    transform: scale(1.2); /* Scale to 120% */
+    color: #b99650; /* Change color on hover */
+}
+
+.icon-small {
+    font-size: 1.5rem; /* Adjust the size of the plane icon as needed */
+    margin-top: 5px; /* Shift the plane icon downwards */
+    transition: transform 0.3s ease, color 0.3s ease; /* Animate scale and color changes */
+}
+
+/* Scale the plane icon up on hover */
+.navbar-brand:hover .icon-small {
+    transform: scale(1.2); /* Scale to 120% */
+    color: #b99650; /* Change color on hover */
+}
+
+/* Style for the logo */
+.logo-small {
+    height: 30px; /* Adjust height as needed */
+    transition: none; /* Disable transition effects on hover */
+}
+
+/* Custom style for navbar-toggler */
+.navbar-toggler {
+    border-color: #fff; /* Change the button border to white */
+}
+
+.navbar-toggler-icon {
+    background-image: none; /* Remove the default background image */
+}
+
+.navbar-toggler-icon::before {
+    content: '\2630'; /* Unicode for a hamburger icon */
+    font-size: 1.5rem;
+    color: #fff; /* Change the color to white */
+}
+
+.input-group .form-control {
+    border-radius: 2rem; /* Adjust border radius */
+}
+
+.input-group .btn {
+    border-radius: 0 2rem 2rem 0; /* Match border radius */
+}
+
+
+/* Footer */
+
+.f-info-links a {
+    text-decoration: none !important;
+    color: #46143c !important;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline !important;
+}
+
+.f-info-links {
+    width: 100%;
+}
+
+.f-info-socials {
+    width: 100%;
+    font-size: 1.5rem; /* Make the icons slightly bigger */
+}
+
+.f-info-socials a {
+    color: #46143c !important; /* Set the icon color through the anchor tag */
+    margin: 0 10px; /* Add spacing between social icons */
+    transition: color 0.3s ease-in-out;
+}
+
+.f-info-socials a:hover {
+    color: #fff !important; /* Change the color on hover */
+}
+
+.f-info {
+    display: flex;
+    background-color: #b99650;
+    flex-wrap: wrap;
+    height: 6rem;
+    justify-content: space-evenly;
+    align-items: center; /* Fix alignment */
+    text-align: center;
+}
+
+/* Cards */
+.card{ 
+    border: none !important;
+    margin-bottom: 2rem;
+}
+
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+}
+
+.card-text p{
+    font-weight: 400;
+}
+
+/* Overlay Card effect */
+.card {
+    overflow: hidden; /* Hide overflow to keep the overlay within the image */
+}
+
+.image-container {
+    position: relative; /* Position relative to allow overlay */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.5); /* Light white color for the overlay */
+    display: flex;
+    justify-content: center; /* Center overlay text horizontally */
+    align-items: center; /* Center overlay text vertically */
+    opacity: 0; /* Initially hide the overlay */
+    transition: opacity 0.3s ease; /* Smooth transition for the overlay */
+}
+
+.image-container:hover .overlay {
+    opacity: 1; /* Show the overlay on hover of the image */
+}
+
+.overlay-text {
+    color: #333; /* Dark text color for the overlay */
+    font-size: 1.5rem; /* Font size for the overlay text */
+    text-align: center; /* Center text */
+}
+
+/* Connect Flash Messages */
+.flash-message {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.flash-message.hide {
+    opacity: 0;
+}
+
+/* Map */
+#map {
+    height: 100px;
+    width: 100px;
+}  

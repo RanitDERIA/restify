@@ -1,0 +1,124 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<body>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <br><br>
+            <h3>Create a New Listing</h3>
+
+            <!-- Error Alert -->
+            <% if (messages.error && messages.error.length > 0) { %>
+                <div class="alert alert-danger">
+                    <% messages.error.forEach(function(error) { %>
+                        <p><%= error %></p>
+                    <% }); %>
+                </div>
+            <% } %>
+
+            <!-- Success Alert -->
+            <% if (messages.success && messages.success.length > 0) { %>
+                <div class="alert alert-success">
+                    <% messages.success.forEach(function(success) { %>
+                        <p><%= success %></p>
+                    <% }); %>
+                </div>
+            <% } %>
+
+            <form action="/listings" method="POST" enctype="multipart/form-data" novalidate class="needs-validation">
+                <!-- Title Field -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input name="listing[title]" placeholder="Enter an awesome title" type="text" class="form-control" id="title" required>
+                    <div class="invalid-feedback">
+                        Oops! Don't forget to give your listing a catchy title!
+                    </div>
+                </div>
+
+                <!-- Description Field -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="listing[description]" placeholder="Describe your amazing listing" class="form-control" id="description" required></textarea>
+                    <div class="invalid-feedback">
+                        Let your creativity shine! We need a cool description.
+                    </div>
+                </div>
+
+                <!-- Image Field -->
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Listing Image</label>
+                    <input type="file" name="listing[image]" class="form-control" id="image" required>
+                </div>
+
+                <!-- Price and Location Fields on the same line -->
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="price" class="form-label">Price</label>
+                        <input type="number" name="listing[price]" placeholder="Set a fair price" class="form-control" id="price" required>
+                        <div class="invalid-feedback">
+                            Don't forget to set a price! What's this worth?
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" name="listing[location]" placeholder="Where is this amazing place?" class="form-control" id="location" required>
+                        <div class="invalid-feedback">
+                            We need to know where this is! Don't forget the location.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label for="category" class="form-label">Category</label>
+                        <select name="listing[category]" id="category" class="form-select" required>
+                            <option value="trending">Trending</option>
+                            <option value="rooms">Rooms</option>
+                            <option value="cities">Iconic Cities</option>
+                            <option value="mountains">Mountains</option>
+                            <option value="castles">Castles</option>
+                            <option value="pools">Amazing Pools</option>
+                            <option value="camping">Camping</option>
+                            <option value="farms">Farms</option>
+                            <option value="arctic">Arctic</option>
+                        </select>
+                    </div>
+    
+                    <!-- Country Field -->
+                    <div class="mb-3 col-md-6">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" name="listing[country]" placeholder="Country where it's located" class="form-control" id="country" required>
+                        <div class="invalid-feedback">
+                            Please provide the country. The world needs to know!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary" style="background-color: #46143c;">Add Listing</button>
+            </form>
+
+            <br><br>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript for Bootstrap's custom validation feedback
+        (() => {
+            'use strict'
+
+            const forms = document.querySelectorAll('.needs-validation')
+
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+</body>

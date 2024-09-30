@@ -1,0 +1,84 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<body>
+    <div class="row mt-3">
+        <h3 class="col-6 offset-3 text-center">Sign Up on Restify</h3> <!-- Centered heading -->
+        <div class="col-6 offset-3">
+            <!-- Flash messages section -->
+            <% if (messages.success) { %>
+                <div class="alert alert-success flash-message">
+                    <%= messages.success %>
+                </div>
+            <% } %>
+            
+            <% if (messages.error) { %>
+                <div class="alert alert-danger flash-message">
+                    <%= messages.error %>
+                </div>
+            <% } %>
+
+            <form action="/signup" method="post" class="needs-validation" novalidate>
+                <!-- Username field -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input name="username" type="text" class="form-control" id="username" required>
+                    <div class="invalid-feedback">
+                        Oops! Don't forget to enter a username!
+                    </div>
+                    <div class="valid-feedback">
+                        Great! Username looks good.
+                    </div>
+                </div>
+
+                <!-- Email field -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input name="email" type="email" class="form-control" id="email" required>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+
+                <!-- Password field with eye icon -->
+                <div class="mb-3 position-relative">
+                    <label for="password" class="form-label">Password</label>
+                    <input name="password" type="password" class="form-control" id="password" required>
+                    <button type="button" class="btn btn-outline-secondary position-absolute top-50 end-0 translate-middle-y" 
+                            style="border: none;" onclick="togglePasswordVisibility()">
+                        <i id="togglePasswordIcon" class="fas fa-eye"></i>
+                    </button>
+                    <div class="invalid-feedback">
+                        Please provide a password.
+                    </div>
+                </div>
+
+                <!-- Signup button -->
+                <button type="submit" class="btn" style="background-color: #46143c; color: white;">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.getElementById('togglePasswordIcon');
+            
+            // Toggle password visibility
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
+    <!-- Font Awesome CDN for icons (if not already included) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>

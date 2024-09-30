@@ -1,0 +1,192 @@
+<% layout("/layouts/boilerplate.ejs") %>
+    
+    <body>
+        <div class="container mt-1">
+
+            <!-- Success Flash Message Section -->
+            <% if (messages.success) { %>
+                <div class="alert alert-success">
+                    <%= messages.success %>
+                </div>
+                <% } %>
+
+                    <!-- Heading Section -->
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2 text-center">
+                            <h3 class="mb-4">
+                                <%= listing.title %>
+                            </h3>
+                        </div>
+                    </div>
+
+                    <!-- Image Section -->
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2 text-center">
+                            <img src="<%= listing.image.url %>" alt="<%= listing.title %> image"
+                                class="img-fluid rounded mb-4"
+                                style="height: 18rem; object-fit: cover; width: 100%; border-radius: 1.5rem;">
+                        </div>
+                    </div>
+
+                    <!-- Listing Details Section -->
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            <ul class="list-unstyled">
+                                <li><strong>Description:</strong>
+                                    <%= listing.description %>
+                                </li>
+                                <li><strong>Price:</strong> ₹<%= listing.price.toLocaleString('en-IN', {
+                                        maximumFractionDigits: 2 }) %>
+                                </li>
+                                <li><strong>Location:</strong>
+                                    <%= listing.location %>
+                                </li>
+                                <li><strong>Country:</strong>
+                                    <%= listing.country %>
+                                </li>
+                                <% if (listing.owner) { %>
+                                    <li><strong>Created by:</strong> <i style="color: #46143c;">
+                                            <%= listing.owner.username %>
+                                        </i></li>
+                                    <% } %>
+                            </ul>
+
+                            <!-- Show Edit/Delete buttons only if the current user is the owner of the listing -->
+                            <% if (user && user._id.toString()===listing.owner._id.toString()) { %>
+                                <div class="text-center">
+                                    <a href="/listings/<%= listing._id %>/edit" class="btn me-2"
+                                        style="background-color: #b99650; color: #46143c; width: 100px; font-weight: bold;">Edit</a>
+                                    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST"
+                                        style="display:inline;">
+                                        <button type="submit" class="btn"
+                                            style="background-color: #46143c; color: white; width: 100px;">Delete</button>
+                                    </form>
+                                </div>
+                                <% } %>
+                        </div>
+                    </div>
+
+                    <!-- Review Form Section (Show only if user is logged in) -->
+                    <div class="row mt-5">
+                        <div class="col-md-8 offset-md-2">
+                            <h4 class="mb-4">Leave a Review</h4>
+                            <% if (user) { %>
+                                <form action="/listings/<%= listing._id %>/reviews" method="POST">
+                                    <input type="hidden" name="review[listing]" value="<%= listing._id %>">
+
+                                    <div class="mb-3">
+                                        <label for="comment" class="form-label">Comment:</label>
+                                        <textarea id="comment" name="review[comment]"
+                                            class="form-control <%= messages.comment ? 'is-invalid' : '' %>" rows="4"
+                                            required minlength="10" maxlength="500"></textarea>
+                                        <div class="invalid-feedback">
+                                            <% if (messages.comment) { %>
+                                                Comment should be longer than 10 characters and shorter than 500
+                                                characters.
+                                                <% } %>
+                                        </div>
+                                    </div>
+
+                                    <!-- Starability Heartbeat Rating System -->
+                                    <div class="mb-3 d-flex align-items-center">
+                                        <label for="rating" class="form-label me-3">Rate this listing:</label>
+                                        <fieldset class="starability-heartbeat">
+                                            <legend class="visually-hidden">Rate this listing</legend>
+                                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]"
+                                                value="0" checked aria-label="No rating." />
+                                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                                            <label for="first-rate1" title="Terrible">1 star</label>
+                                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                                            <label for="first-rate2" title="Not good">2 stars</label>
+                                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                                            <label for="first-rate3" title="Average">3 stars</label>
+                                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                                            <label for="first-rate4" title="Very good">4 stars</label>
+                                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                                            <label for="first-rate5" title="Amazing">5 stars</label>
+                                        </fieldset>
+                                        <div class="invalid-feedback">
+                                            <% if (messages.rating) { %>
+                                                A rating must be selected.
+                                                <% } %>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-success"
+                                            style="background-color: #b99650; color: white; border-color: #46143c;">Submit
+                                            Review</button>
+                                    </div>
+                                </form>
+                                <% } else { %>
+                                    <p class="text-center text-muted">You must <a href="/login">log in</a> to leave a
+                                        review.</p>
+                                    <% } %>
+                        </div>
+                    </div>
+
+                    <!-- Display Reviews Section -->
+                    <div class="row mt-5">
+                        <div class="col-md-8 offset-md-2">
+                            <h4 class="mb-4">Reviews</h4>
+                            <% if (listing.reviews.length> 0) { %>
+                                <% listing.reviews.forEach(review=> { %>
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <p class="card-text"><strong>Comment:</strong>
+                                                <%= review.comment %>
+                                            </p>
+                                            <p class="card-text"><strong>Rating:</strong>
+                                                <% for (let i=0; i < review.rating; i++) { %>
+                                                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                                                    <!-- Filled star -->
+                                                    <% } %>
+                                                        <% for (let i=review.rating; i < 5; i++) { %>
+                                                            <i class="far fa-star" style="color: #FFD700;"></i>
+                                                            <!-- Empty star -->
+                                                            <% } %>
+                                                                (<%= review.rating %>/5)
+                                            </p>
+                                            <p class="card-text" style="font-style: italic;">
+                                                <strong>Posted by:</strong> <span style="color: #46143c;">
+                                                    <%= review.author %>
+                                                </span>
+                                                <strong> &nbsp;Posted on:</strong>
+                                                <%= new Date(review.createdAt).toLocaleString() %>
+                                            </p>
+
+                                            <% if (user && user.username===review.author) { %>
+                                                <div class="text-end">
+                                                    <a href="/listings/<%= listing._id %>/reviews/<%= review._id %>/edit"
+                                                        class="btn"
+                                                        style="background-color: goldenrod; color: #46143c; width: 100px; font-weight: bold;">Edit</a>
+                                                    <form
+                                                        action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                                                        method="POST" style="display:inline;">
+                                                        <button type="submit" class="btn"
+                                                            style="background-color: #DC143C; color: white; width: 100px;">Delete</button>
+                                                    </form>
+                                                </div>
+                                                <% } %>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                        <% } else { %>
+                                            <p>No reviews yet. Be the first to leave a review!</p>
+                                            <% } %>
+                        </div>
+                    </div>
+
+
+        </div>
+
+        <!-- Flash message auto-hide script -->
+        <script>
+            setTimeout(function () {
+                const flashMessages = document.querySelectorAll('.flash-message');
+                flashMessages.forEach(message => {
+                    message.classList.add('hide');
+                });
+            }, 3000); // 3000 milliseconds = 3 seconds
+        </script>
+    </body>

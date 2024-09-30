@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top"> 
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/listings" aria-label="Homepage">
+            <i class="fa-solid fa-plane icon-small" style="margin-left: 0.5rem;"></i> <!-- Plane icon -->
+            &nbsp; <img src="/images/brand.png" alt="Brand Logo" class="logo-small" style="height: 2.5rem;"> <!-- Logo image -->
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <!-- Search Box -->
+            <form class="navbar-nav ms-auto" role="search" action="/listings" method="GET" style="margin-right: 25%;">
+                <div class="input-group" style="border-radius: 25px;">
+                    <input class="form-control" type="search" name="search" placeholder="&nbsp;&nbsp;&nbsp;Search destinations" aria-label="Search" style="text-align: left;">
+                    <button class="btn btn-outline-light" type="submit" style="border-color: #b99650; background-color: #b99650;">
+                        <i class="fa-solid fa-magnifying-glass"></i>&nbsp;Search
+                    </button>
+                </div>
+            </form>
+
+            <div class="navbar-nav">
+                <a class="nav-link" href="/listings/new">
+                <i><small>Restify your home</small></i>
+             </a>&nbsp;&nbsp;&nbsp;&nbsp;
+             
+                <% if (user) { %> <!-- Check if user is authenticated -->
+                    <a class="nav-link" href="/logout"><strong>Logout</strong></a>
+                <% } else { %>
+                    <a class="nav-link" href="/signup"><strong>Sign Up</strong></a>
+                    <a class="nav-link" href="/login"><strong>Login</strong></a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>
