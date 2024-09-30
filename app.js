@@ -71,7 +71,7 @@ app.use(
         resave: false,
         saveUninitialized: true,
         cookie: {
-            secure: process.env.NODE_ENV === "production", // Only set to true in production for HTTPS
+            secure: true, // Only set to true in production for HTTPS
             expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
