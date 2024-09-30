@@ -86,33 +86,6 @@ body {
     border-radius: 0 2rem 2rem 0; /* Match border radius */
 }
 
-/* Center Restify logo in the middle of the page */
-.center-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height to vertically center */
-    text-align: center;
-}
-
-.center-logo img {
-    height: 200px; /* Adjust the size of the logo */
-    transition: transform 0.3s ease-in-out; /* Optional animation on hover */
-}
-
-.center-logo img:hover {
-    transform: scale(1.1); /* Slightly scale the logo on hover */
-}
-
-/* Hiding filters on small screens */
-@media (max-width: 768px) { /* Apply styles for small screens (below 768px width) */
-    #filters {
-        display: none; /* Hide the filters section */
-    }
-}
-
-
-
 /* Footer */
 
 .f-info-links a {
