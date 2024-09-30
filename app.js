@@ -15,25 +15,25 @@ const ExpressError = require("./utils/ExpressError");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const User = require("./models/user.js");
-const cloudinary = require('./cloudConfig'); // Include Cloudinary config
+const cloudinary = require('./cloudConfig');
 const multer = require('multer');
-const { storage } = require('./cloudConfig'); // Import storage from cloudConfig
-const upload = multer({ storage }); // Set up multer to use Cloudinary storage
+const { storage } = require('./cloudConfig');
+const upload = multer({ storage });
+const helmet = require('helmet'); // Added Helmet for security
 
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-// Use environment variable for the database URL
 const dbUrl = process.env.ATLASDB_URL;
 
-// Async function to connect to MongoDB
 async function main() {
     try {
         await mongoose.connect(dbUrl);
         console.log("Connected to DB");
     } catch (err) {
         console.error("MongoDB connection error:", err);
+        process.exit(1); // Exit if DB connection fails
     }
 }
 
@@ -43,6 +43,14 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
+
+// Trust proxy for services like Render/Heroku
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1);
+}
+
+// Security: Helmet to set HTTP headers
+app.use(helmet());
 
 // Middleware setup
 app.use(express.urlencoded({ extended: true }));
@@ -54,25 +62,23 @@ const store = MongoStore.create({
     crypto: {
         secret: process.env.SESSION_SECRET,
     },
-    touchAfter: 24 * 3600, 
+    touchAfter: 24 * 3600,
 });
 
-// Error catcher for MongoDB session store
 store.on("error", (e) => {
     console.log("ERROR in MONGO SESSION STORE:", e);
 });
 
-// Session setup with conditional secure cookie
 app.use(
     session({
         store: store,
-        name: "session", // Custom cookie name for security
+        name: "session",
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
         cookie: {
-            secure: true, // Only set to true in production for HTTPS
-            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
+            secure: process.env.NODE_ENV === "production",
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
         },
@@ -104,29 +110,27 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
-// Privacy & terms routes (Before the 404 error handler)
 app.get("/privacy", (req, res) => {
-    res.render("privacy"); // Correctly render the 'privacy.ejs' view
+    res.render("privacy");
 });
 
 app.get("/terms", (req, res) => {
-    res.render("terms"); // Correctly render the 'terms.ejs' view
+    res.render("terms");
 });
 
-// Basic root route
 app.get("/", (req, res) => {
     res.redirect("/listings");
 });
 
-// Middleware for Page Not Found (404) - this should be placed at the end
+// Page Not Found handler
 app.use((req, res, next) => {
     next(new ExpressError("Page not found", 404));
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    const { statusCode = 500, message } = err;
-    res.status(statusCode).render("error", { message: message || "Something went wrong" });
+    const { statusCode = 500 } = err;
+    res.status(statusCode).render("error", { message: err.message || "Something went wrong", stack: process.env.NODE_ENV !== "production" ? err.stack : null });
 });
 
 // Server listening on port 8080
