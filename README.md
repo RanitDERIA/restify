@@ -56,17 +56,18 @@ CLOUDINARY_API_SECRET=<your Cloudinary API secret>
 MAPBOX_TOKEN=<your Mapbox token>
 ```
 ### Technologies Utilized: <a name="technologies-utilized"></a>
-<div style="display: inline_block"> <img align="center" alt="JavaScript" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-plain.svg"> 
-<img align="center" alt="HTML5" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg"> 
-<img align="center" alt="CSS3" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg"> 
-<img align="center" alt="Node.js" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg"> 
-<img align="center" alt="Express.js" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original.svg"> 
-<img align="center" alt="MongoDB" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg"> 
-<img align="center" alt="Bootstrap" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain.svg"> &nbsp;
+<div style="display: inline_block"> <img align="center" alt="JavaScript" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-plain.svg"> &nbsp;&nbsp;
+<img align="center" alt="HTML5" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg"> &nbsp;&nbsp;
+<img align="center" alt="CSS3" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg"> &nbsp;&nbsp;
+<img align="center" alt="Node.js" height="30" width="40" src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg"> &nbsp;&nbsp;
+<img align="center" alt="Express.js" height="40" width="40" src="./readme-images/express.png"> &nbsp;&nbsp;
+<img align="center" alt="MongoDB" height="30" width="125" src="./readme-images/mongo.png"> &nbsp;&nbsp;
+<img align="center" alt="Bootstrap" height="40" width="40" src="./readme-images/bootstrap.png"> &nbsp;&nbsp;
 <img align="center" alt="Cloudinary" height="30" width="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Cloudinary_logo.svg/234px-Cloudinary_logo.svg.png?20220510233823">&nbsp;&nbsp;
 <img align="center" alt="amazon" height="30" width="45" src="./readme-images/aws.png">&nbsp;&nbsp;
-<img align="center" alt="passport" height="30" width="60" src="https://www.passportjs.org/images/PassportJS.svg">&nbsp;
-<img align="center" alt="npm-packages" height="40" width="40" src="./readme-images/npm.png">&nbsp;
+<img align="center" alt="passport" height="30" width="60" src="https://www.passportjs.org/images/PassportJS.svg">&nbsp;&nbsp;
+<img align="center" alt="npm-packages" height="40" width="40" src="./readme-images/npm.png">&nbsp;&nbsp;
+<img align="center" alt="render" height="40" width="40" src="./readme-images/image.png">&nbsp;&nbsp;
 
 ### Features: <a name="features"></a>
 * **User Authentication:** Secure login and registration using Passport.js.
