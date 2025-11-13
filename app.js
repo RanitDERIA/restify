@@ -94,7 +94,7 @@ app.engine("ejs", ejsMate);
 
 // Middleware to pass user and flash messages to all views
 app.use((req, res, next) => {
-    res.locals.user = req.user;
+    res.locals.user = req.user || null;   // <-- FIXED
     res.locals.messages = req.flash();
     next();
 });
