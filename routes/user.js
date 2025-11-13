@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/users.js"); // Import the controller
+const passport = require("passport");
 
 // Route to render the signup form
 router.get("/signup", userController.renderSignup);
@@ -12,7 +13,17 @@ router.post("/signup", userController.signup);
 router.get("/login", userController.renderLogin);
 
 // Route to handle login logic
-router.post("/login", userController.login);
+// router.post("/login", userController.login);
+
+router.post(
+    "/login",
+    passport.authenticate("local", {
+        failureRedirect: "/login",
+        failureFlash: true
+    }),
+    userController.login
+);
+
 
 // Logout Route
 router.get("/logout", userController.logout);
