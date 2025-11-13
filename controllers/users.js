@@ -1,62 +1,53 @@
-const User = require("../models/user"); // Import the User model
+const User = require("../models/user");
 const passport = require("passport");
 
-// Controller to render the signup form
+// Render Signup Page
 module.exports.renderSignup = (req, res) => {
     res.render("users/signup.ejs");
 };
 
-// Controller to handle signup logic
+// Handle Signup Logic
 module.exports.signup = async (req, res, next) => {
     try {
         const { username, email, password } = req.body;
         const newUser = new User({ username, email });
 
-        // Use passport-local-mongoose to register the user with hashed password
         const registeredUser = await User.register(newUser, password);
 
-        // Automatically log in the user after successful registration
+        // Auto-login after signup
         req.login(registeredUser, (err) => {
-            if (err) return next(err); // Handle login error
+            if (err) return next(err);
+
             req.flash("success", "Welcome to Restify!");
-            res.redirect("/listings"); // Redirect to listings page after signup
+            res.redirect("/listings");
         });
     } catch (e) {
-        req.flash("error", e.message); // Handle registration error
-        res.redirect("/signup"); // Redirect back to signup page in case of error
+        req.flash("error", e.message);
+        res.redirect("/signup");
     }
 };
 
-// Controller to render the login form
+// Render Login Page
 module.exports.renderLogin = (req, res) => {
     res.render("users/login.ejs");
 };
 
-// Controller to handle login logic
-module.exports.login = (req, res, next) => {
-    // Store the original URL before authentication
-    req.session.redirectUrl = req.originalUrl;
+// Handle Login Success (passport.authenticate is now in route file)
+module.exports.login = (req, res) => {
+    req.flash("success", "Welcome back to Restify!");
 
-    passport.authenticate("local", { 
-        failureRedirect: '/login', 
-        failureFlash: true // Enable flash messages for login failures
-    })(req, res, () => {
-        req.flash("success", "Welcome back to Restify!");
+    const redirectUrl = req.session.redirectUrl || "/listings";
+    delete req.session.redirectUrl; // Prevent reuse
 
-        // Redirect to the originally requested URL or to the default listings page
-        const redirectUrl = req.session.redirectUrl || "/listings";
-        delete req.session.redirectUrl; // Clear the redirect URL after use
-        res.redirect(redirectUrl);
-    });
+    res.redirect(redirectUrl);
 };
 
-// Controller to handle logout logic
+// Logout Handler
 module.exports.logout = (req, res, next) => {
     req.logout((err) => {
-        if (err) {
-            return next(err); // Handle logout error
-        }
+        if (err) return next(err);
+
         req.flash("success", "You are successfully logged out");
-        res.redirect("/listings"); // Redirect to listings page after logout
+        res.redirect("/listings");
     });
 };
